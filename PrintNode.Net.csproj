@@ -48,9 +48,11 @@
   <ItemGroup>
     <Compile Include="Http\ApiHelper.cs" />
     <Compile Include="PrintNodeAuthenticationType.cs" />
+    <Compile Include="PrintNodeChildAccount.cs" />
     <Compile Include="PrintNodeComputer.cs" />
     <Compile Include="PrintNodeConfiguration.cs" />
     <Compile Include="PrintNodeCredentials.cs" />
+    <Compile Include="PrintNodeException.cs" />
     <Compile Include="PrintNodePrinter.cs" />
     <Compile Include="PrintNodePrinterCapabilities.cs" />
     <Compile Include="PrintNodePrintJob.cs" />

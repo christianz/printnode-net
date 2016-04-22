@@ -1,12 +1,11 @@
 ﻿using System;
-using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace PrintNode.Net
 {
@@ -16,8 +15,7 @@ namespace PrintNode.Net
 
         private static readonly JsonSerializerSettings DefaultSerializationSettings = new JsonSerializerSettings
         {
-            NullValueHandling = NullValueHandling.Ignore,
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
+            NullValueHandling = NullValueHandling.Ignore
         };
 
         internal static async Task<string> Get(string relativeUri)
@@ -42,16 +40,64 @@ namespace PrintNode.Net
                 var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
 
                 var response = await http.PostAsync(BaseUri + relativeUri, new StringContent(json, Encoding.UTF8, "application/json"), CancellationToken.None);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new PrintNodeException(response);
+                }
+
                 return await response.Content.ReadAsStringAsync();
             }
         }
 
-        private static HttpClient BuildHttpClient()
+        internal static async Task<string> Patch<T>(string relativeUri, T parameters, Dictionary<string, string> headers)
         {
+            using (var http = BuildHttpClient(headers))
+            {
+                var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), BaseUri + relativeUri) { Content = new StringContent(json, Encoding.UTF8, "application/json") };
+
+                var response = await http.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new PrintNodeException(response);
+                }
+
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        internal static async Task<string> Delete(string relativeUri, Dictionary<string, string> headers)
+        {
+            using (var http = BuildHttpClient(headers))
+            {
+                var request = new HttpRequestMessage(new HttpMethod("DELETE"), BaseUri + relativeUri);
+
+                var response = await http.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new PrintNodeException(response);
+                }
+
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        private static HttpClient BuildHttpClient(Dictionary<string, string> headers = null)
+        {
+            headers = headers ?? new Dictionary<string, string>();
+
             var http = new HttpClient();
 
             http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(PrintNodeConfiguration.GetApiKey())));
             http.DefaultRequestHeaders.Add("Accept-Version", "~3");
+
+            foreach (var kv in headers)
+            {
+                http.DefaultRequestHeaders.Add(kv.Key, kv.Value);
+            }
 
             return http;
         }

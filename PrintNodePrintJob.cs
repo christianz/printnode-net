@@ -11,18 +11,22 @@ namespace PrintNode.Net
         /// <summary>
         /// Assigned by API. Any value submitted here will be ignored.
         /// </summary>
+        [JsonProperty("id")]
         public long? Id { get; set; }
 
         /// <summary>
         /// The printer id associated with your account.
         /// </summary>
+        [JsonProperty("printerId")]
         public long PrinterId { get; set; }
 
+        [JsonProperty("printer")]
         public PrintNodePrinter Printer { get; set; }
 
         /// <summary>
         /// A title to give the PrintJob. This is the name which will appear in the operating system's print queue.
         /// </summary>
+        [JsonProperty("title")]
         public string Title { get; set; }
 
         /// <summary>
@@ -30,6 +34,7 @@ namespace PrintNode.Net
         /// 
         /// See <a href="https://www.printnode.com/docs/api/curl/#create-printjob-content">content</a>.
         /// </summary>
+        [JsonProperty("contentType")]
         public string ContentType { get; set; }
 
         /// <summary>
@@ -37,22 +42,26 @@ namespace PrintNode.Net
         /// or
         /// A base64 encoded representation of the pdf when contentType is 'pdf_base64'.
         /// </summary>
+        [JsonProperty("content")]
         public string Content { get; set; }
 
         /// <summary>
         /// A text description of how the printjob was created or where the printjob originated.
         /// </summary>
+        [JsonProperty("source")]
         public string Source { get; set; }
 
         /// <summary>
         /// An object describing various options which can be set for this PrintJob. See options. Printing options have no effect when raw printing.
         /// </summary>
+        [JsonProperty("options")]
         public IEnumerable<PrintNodePrintJobOptions> Options { get; set; }
 
         /// <summary>
         /// The maximum number of seconds PrintNode should retain this PrintJob for attempted printing in the event the PrintJob cannot be 
         /// printed immediately. The current default is 14 days or 1,209,600 seconds.
         /// </summary>
+        [JsonProperty("expireAfter")]
         public long? ExpireAfter { get; set; }
 
         /// <summary>
@@ -61,6 +70,7 @@ namespace PrintNode.Net
         /// support. This is the only way to support multiple copies when raw printing. This also enables printing multiple copies even when a 
         /// printer driver does not natively support this.
         /// </summary>
+        [JsonProperty("qty")]
         public int Qty { get; set; }
 
         /// <summary>
@@ -87,10 +97,13 @@ namespace PrintNode.Net
         /// }
         /// Just replace the "username" and "password" with your credentials as appropriate.
         /// </summary>
+        [JsonProperty("authentication")]
         public PrintNodePrintJobAuthentication Authentication { get; set; }
 
+        [JsonProperty("state")]
         public string State { get; set; }
 
+        [JsonProperty("createTimeStamp")]
         public DateTime? CreateTimeStamp { get; set; }
 
         public static async Task<IEnumerable<PrintNodePrintJob>> ListAsync()

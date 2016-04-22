@@ -15,12 +15,14 @@ namespace PrintNode.Net
         /// the resolution of the scale in micrograms where known or null if not known.Suppose a scale is displaying a weight of 
         /// 125g accurate to 5g the returned mass value array would be [125000000, 5000000].
         /// </summary>
+        [JsonProperty("mass")]
         public int[] Mass { get; set; }
 
         /// <summary>
         /// A string identifier for the scales. By default this will be the scales manufacturer and description. The PrintNode 
         /// client may rename a scale. Max length 251 characters.
         /// </summary>
+        [JsonProperty("deviceName")]
         public string DeviceName { get; set; }
 
         /// <summary>
@@ -31,17 +33,20 @@ namespace PrintNode.Net
         /// is connected but a deviceNum be reused. For example, should a scale be disconnected and reconnected it will 
         /// recieve the lowest currently unused deviceNum.
         /// </summary>
+        [JsonProperty("deviceNum")]
         public int DeviceNum { get; set; }
 
         /// <summary>
         /// A string description of the scales connection method. Eg, "USB1" or "COM0".
         /// </summary>
+        [JsonProperty("port")]
         public string Port { get; set; }
 
         /// <summary>
         /// Support for counting scales. Should a scale support counting and make this information available over usb this value will be 
         /// returned here. null otherwise.
         /// </summary>
+        [JsonProperty("count")]
         public int Count { get; set; }
 
         /// <summary>
@@ -53,6 +58,7 @@ namespace PrintNode.Net
         /// mass. E.g.a scales display values of "1.25 kg", "1200g" or "2lb 10.32oz" would have a the same mass value but measurement 
         /// value of {"kg":1250000}, {"g": 1200000000} and {"lb": 2000000, "oz": 10320000} respectively.
         /// </summary>
+        [JsonProperty("measurement")]
         public PrintNodeScaleMeasurement Measurement { get; set; }
 
         /// <summary>
@@ -61,6 +67,7 @@ namespace PrintNode.Net
         /// Innaccuracies of greater than ± 5 minutes are not uncommon. This has been been provided so that the total latency in the 
         /// system can be accurately measured if the consumer of the api is the same as the machine producing the scales data.
         /// </summary>
+        [JsonProperty("clientReportedCreateTimeStamp")]
         public DateTime ClientReportedCreateTimeStamp { get; set; }
 
         /// <summary>
@@ -69,6 +76,7 @@ namespace PrintNode.Net
         /// conditions this offset is usually accurate to ± 10 milliseconds. It takes a short while to determine the ntpOffset after the 
         /// client starts up. When this information is not available the value will be null.
         /// </summary>
+        [JsonProperty("ntpOffset")]
         public string NtpOffset { get; set; }
 
         /// <summary>
@@ -78,31 +86,37 @@ namespace PrintNode.Net
         /// here do not mean that the data in old.Clients update PrintNode when they connect, disconnect or the weight returned from 
         /// the scales changes.If the weight returned by the scale is stable the ageOfData field can grow but still be accurate.
         /// </summary>
+        [JsonProperty("ageOfData")]
         public int AgeOfData { get; set; }
 
         /// <summary>
         /// The computer id.
         /// </summary>
+        [JsonProperty("computerId")]
         public long ComputerId { get; set; }
 
         /// <summary>
         /// String description of the vendor or manufacturer of the scales device. This is supplied by the usb subsystem
         /// </summary>
+        [JsonProperty("vendor")]
         public string Vendor { get; set; }
 
         /// <summary>
         /// The device name
         /// </summary>
+        [JsonProperty("product")]
         public string Product { get; set; }
 
         /// <summary>
         /// The USB device vendor id. See <a href="http://www.usb.org/developers/vendor/">here</a> for detailed description and here for up to date list of vendor and device ids.
         /// </summary>
+        [JsonProperty("vendorId")]
         public int VendorId { get; set; }
 
         /// <summary>
         /// The USB device id. See <a href="http://www.usb.org/developers/vendor/">here</a> for detailed description and here for up to date list of vendor and device ids.
         /// </summary>
+        [JsonProperty("deviceId")]
         public int DeviceId { get; set; }
 
         public static async Task<IEnumerable<PrintNodeScale>> ListForComputerAsync(long computerId)
