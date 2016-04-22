@@ -17,7 +17,6 @@ namespace PrintNode.Net
         private static readonly JsonSerializerSettings DefaultSerializationSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
         internal static async Task<string> Get(string relativeUri)
@@ -42,6 +41,19 @@ namespace PrintNode.Net
                 var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
 
                 var response = await http.PostAsync(BaseUri + relativeUri, new StringContent(json, Encoding.UTF8, "application/json"), CancellationToken.None);
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        internal static async Task<string> Patch<T>(string relativeUri, T parameters)
+        {
+            using (var http = BuildHttpClient())
+            {
+                var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
+
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), BaseUri + relativeUri) { Content = new StringContent(json) };
+
+                var response = await http.SendAsync(request);
                 return await response.Content.ReadAsStringAsync();
             }
         }
