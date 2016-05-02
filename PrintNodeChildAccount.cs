@@ -84,9 +84,16 @@ namespace PrintNode.Net
 
         public static async Task<bool> Exists()
         {
-            var response = await ApiHelper.Get("/whoami");
+            try
+            {
+                var response = await ApiHelper.Get("/whoami");
 
-            return !string.IsNullOrEmpty(response);
+                return !string.IsNullOrEmpty(response);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<PrintNodeChildAccount> UpdateAsync()
