@@ -52,6 +52,7 @@
     <Compile Include="PrintNodeComputer.cs" />
     <Compile Include="PrintNodeConfiguration.cs" />
     <Compile Include="PrintNodeCredentials.cs" />
+    <Compile Include="PrintNodeDelegatedClientContext.cs" />
     <Compile Include="PrintNodeException.cs" />
     <Compile Include="PrintNodePrinter.cs" />
     <Compile Include="PrintNodePrinterCapabilities.cs" />

@@ -18,9 +18,9 @@ namespace PrintNode.Net
             NullValueHandling = NullValueHandling.Ignore
         };
 
-        internal static async Task<string> Get(string relativeUri, string clientId = null)
+        internal static async Task<string> Get(string relativeUri)
         {
-            using (var http = BuildHttpClient(clientId))
+            using (var http = BuildHttpClient())
             {
                 var result = await http.GetAsync(BaseUri + relativeUri, CancellationToken.None);
 
@@ -33,9 +33,9 @@ namespace PrintNode.Net
             }
         }
 
-        internal static async Task<string> Post<T>(string relativeUri, T parameters, string clientId = null)
+        internal static async Task<string> Post<T>(string relativeUri, T parameters)
         {
-            using (var http = BuildHttpClient(clientId))
+            using (var http = BuildHttpClient())
             {
                 var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
 
@@ -50,9 +50,9 @@ namespace PrintNode.Net
             }
         }
 
-        internal static async Task<string> Patch<T>(string relativeUri, T parameters, Dictionary<string, string> headers, string clientId = null)
+        internal static async Task<string> Patch<T>(string relativeUri, T parameters, Dictionary<string, string> headers)
         {
-            using (var http = BuildHttpClient(clientId, headers))
+            using (var http = BuildHttpClient(headers))
             {
                 var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
                 var request = new HttpRequestMessage(new HttpMethod("PATCH"), BaseUri + relativeUri) { Content = new StringContent(json, Encoding.UTF8, "application/json") };
@@ -68,9 +68,9 @@ namespace PrintNode.Net
             }
         }
 
-        internal static async Task<string> Delete(string relativeUri, Dictionary<string, string> headers, string clientId = null)
+        internal static async Task<string> Delete(string relativeUri, Dictionary<string, string> headers)
         {
-            using (var http = BuildHttpClient(clientId, headers))
+            using (var http = BuildHttpClient(headers))
             {
                 var request = new HttpRequestMessage(new HttpMethod("DELETE"), BaseUri + relativeUri);
 
@@ -85,10 +85,17 @@ namespace PrintNode.Net
             }
         }
 
-        private static HttpClient BuildHttpClient(string clientId = null, Dictionary<string, string> headers = null)
+        private static HttpClient BuildHttpClient(Dictionary<string, string> headers = null)
         {
             headers = headers ?? new Dictionary<string, string>();
-            clientId = clientId ?? PrintNodeConfiguration.GetApiKey();
+            var context = PrintNodeDelegatedClientContext.Current;
+
+            var clientId = PrintNodeConfiguration.GetApiKey();
+
+            if (context != null)
+            {
+                clientId = context.ClientId;
+            }
 
             var http = new HttpClient();
 
