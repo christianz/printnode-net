@@ -75,6 +75,20 @@ namespace PrintNode.Net
             return JsonConvert.DeserializeObject<PrintNodeChildAccount>(response);
         }
 
+        public static async Task<string> GetKeyAsync(string clientId)
+        {
+            var response = await ApiHelper.Get("/client/key/" + clientId + "?version=4.7.1&edition=printnode");
+
+            return JsonConvert.DeserializeObject<string>(response);
+        }
+
+        public static async Task<bool> Exists()
+        {
+            var response = await ApiHelper.Get("/whoami");
+
+            return !string.IsNullOrEmpty(response);
+        }
+
         public async Task<PrintNodeChildAccount> UpdateAsync()
         {
             var response = await ApiHelper.Patch("/account", this, new Dictionary<string, string>

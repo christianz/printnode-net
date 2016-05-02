@@ -89,18 +89,26 @@ namespace PrintNode.Net
         {
             headers = headers ?? new Dictionary<string, string>();
             var context = PrintNodeDelegatedClientContext.Current;
+            string clientId;
 
-            var clientId = PrintNodeConfiguration.GetApiKey();
-
-            if (context != null)
-            {
-                clientId = context.ClientId;
-            }
+            //if (context == null)
+            //{
+                clientId = PrintNodeConfiguration.GetApiKey();
+            //}
+            //else
+            //{
+            //    clientId = context.ClientId;
+            //}
 
             var http = new HttpClient();
 
             http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(clientId)));
             http.DefaultRequestHeaders.Add("Accept-Version", "~3");
+
+            if (context != null)
+            {
+                http.DefaultRequestHeaders.Add("X-Child-Account-By-Id", context.ClientId);
+            }
 
             foreach (var kv in headers)
             {
