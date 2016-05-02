@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DelegatedClientContext.cs" />
     <Compile Include="Http\ApiHelper.cs" />
     <Compile Include="PrintNodeAuthenticationType.cs" />
     <Compile Include="PrintNodeChildAccount.cs" />
