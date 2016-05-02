@@ -72,16 +72,27 @@ namespace PrintNode.Net
                 Tags
             });
 
-            var response2 = JsonConvert.DeserializeObject<dynamic>(response);
-
             return JsonConvert.DeserializeObject<PrintNodeChildAccount>(response);
         }
 
         public async Task<PrintNodeChildAccount> UpdateAsync()
         {
-            var response = await ApiHelper.Patch("/account", this);
+            var response = await ApiHelper.Patch("/account", this, new Dictionary<string, string>
+            {
+                { "X-Child-Account-By-Id", Id.ToString() }
+            });
 
             return JsonConvert.DeserializeObject<PrintNodeChildAccount>(response);
+        }
+
+        public static async Task<bool> DeleteAsync(long id)
+        {
+            var response = await ApiHelper.Delete("/account", new Dictionary<string, string>
+            {
+                { "X-Child-Account-By-Id", id.ToString() }
+            });
+
+            return JsonConvert.DeserializeObject<bool>(response);
         }
     }
 }

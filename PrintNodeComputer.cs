@@ -8,13 +8,28 @@ namespace PrintNode.Net
 {
     public sealed class PrintNodeComputer
     {
+        [JsonProperty("id")]
         public long Id { get; set; }
+
+        [JsonProperty("name")]
         public string Name { get; set; }
+
+        [JsonProperty("inet")]
         public string Inet { get; set; }
+
+        [JsonProperty("inet6")]
         public string Inet6 { get; set; }
+
+        [JsonProperty("hostName")]
         public string HostName { get; set; }
+
+        [JsonProperty("jre")]
         public string Jre { get; set; }
+
+        [JsonProperty("createTimeStamp")]
         public DateTime CreateTimeStamp { get; set; }
+
+        [JsonProperty("state")]
         public string State { get; set; }
 
         public static async Task<IEnumerable<PrintNodeComputer>> ListAsync()

@@ -9,11 +9,13 @@ namespace PrintNode.Net
         /// 
         /// See <a href="https://www.printnode.com/docs/api/curl/#printer-capabilities">Printer capabilities</a>.
         /// </summary>
+        [JsonProperty("bin")]
         public string Bin { get; set; }
 
         /// <summary>
         /// Enables print copy collation when printing multiple copies. If this option is not specified the printer default is used.
         /// </summary>
+        [JsonProperty("collate")]
         public bool Collate { get; set; }
 
         /// <summary>
@@ -22,6 +24,7 @@ namespace PrintNode.Net
         /// 
         /// See <a href="https://www.printnode.com/docs/api/curl/#printer-capabilities">Printer capabilities</a>.
         /// </summary>
+        [JsonProperty("copies")]
         public int Copies { get; set; }
 
         /// <summary>
@@ -29,12 +32,14 @@ namespace PrintNode.Net
         /// 
         /// See <a href="https://www.printnode.com/docs/api/curl/#printer-capabilities">Printer capabilities</a>.
         /// </summary>
+        [JsonProperty("dpi")]
         public string Dpi { get; set; }
 
         /// <summary>
         /// One of long-edge or short-edge for 2 sides printing along the long-edge (portrait) or the short edge (landscape) respectively. 
         /// If this option is not specified the the printer default is used.
         /// </summary>
+        [JsonProperty("duplex")]
         public string Duplex { get; set; }
 
         /// <summary>
@@ -49,6 +54,7 @@ namespace PrintNode.Net
         /// 
         /// See <a href="https://www.printnode.com/docs/api/curl/#printer-capabilities">Printer capabilities</a>.
         /// </summary>
+        [JsonProperty("media")]
         public string Media { get; set; }
 
         /// <summary>
@@ -57,6 +63,7 @@ namespace PrintNode.Net
         /// 
         /// See <a href="https://www.printnode.com/docs/api/curl/#printer-capabilities">Printer capabilities</a>.
         /// </summary>
+        [JsonProperty("nup")]
         public int Nup { get; set; }
 
         /// <summary>
@@ -65,6 +72,7 @@ namespace PrintNode.Net
         /// 
         /// See <a href="https://www.printnode.com/docs/api/curl/#parameters">Parameters</a>.
         /// </summary>
+        [JsonProperty("pages")]
         public string Pages { get; set; }
 
         /// <summary>
@@ -72,11 +80,13 @@ namespace PrintNode.Net
         /// 
         /// See <a href="https://www.printnode.com/docs/api/curl/#printer-capabilities">Printer capabilities</a>.
         /// </summary>
+        [JsonProperty("paper")]
         public string Paper { get; set; }
 
         /// <summary>
         /// One of 90, 180 or 270. Supports rotating all pages while printing. We've found support on OSX to be patchy. Support depends on both printer and driver.
         /// </summary>
+        [JsonProperty("rotate")]
         public int Rotate { get; set; }
     }
 }
