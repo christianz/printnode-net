@@ -88,27 +88,16 @@ namespace PrintNode.Net
         private static HttpClient BuildHttpClient(Dictionary<string, string> headers = null)
         {
             headers = headers ?? new Dictionary<string, string>();
-            var context = PrintNodeDelegatedClientContext.Current;
-            string clientId;
-
-            //if (context == null)
-            //{
-                clientId = PrintNodeConfiguration.GetApiKey();
-            //}
-            //else
-            //{
-            //    clientId = context.ClientId;
-            //}
-
             var http = new HttpClient();
 
-            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(clientId)));
+            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(PrintNodeConfiguration.GetApiKey())));
             http.DefaultRequestHeaders.Add("Accept-Version", "~3");
+
+            var context = PrintNodeDelegatedClientContext.Current;
 
             if (context != null)
             {
                 http.DefaultRequestHeaders.Add("X-Child-Account-By-Id", context.AccountId.ToString());
-                //http.DefaultRequestHeaders.Add("X-Child-Account-By-Email", "post@foodasylum.com");
             }
 
             foreach (var kv in headers)

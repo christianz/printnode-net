@@ -9,11 +9,6 @@ namespace PrintNode.Net
 
         public PrintNodeDelegatedClientContext(int accountId)
         {
-            if (Current != null)
-            {
-                Current = null;
-            }
-
             AccountId = accountId;
             Current = this;
         }
