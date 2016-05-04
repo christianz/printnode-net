@@ -72,7 +72,7 @@ namespace PrintNode.Net
                 Tags
             });
 
-            return JsonConvert.DeserializeObject<PrintNodeChildAccount>(response);
+            return JsonConvert.DeserializeObject<PrintNodeChildAccount>(response, new PrintNodeChildAccountCreationResponseConverter());
         }
 
         public static async Task<string> GetKeyAsync(string clientId)
@@ -108,10 +108,7 @@ namespace PrintNode.Net
 
         public static async Task<bool> DeleteAsync(long id)
         {
-            var response = await ApiHelper.Delete("/account", new Dictionary<string, string>
-            {
-                { "X-Child-Account-By-Id", id.ToString() }
-            });
+            var response = await ApiHelper.Delete("/account", null);
 
             return JsonConvert.DeserializeObject<bool>(response);
         }

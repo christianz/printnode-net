@@ -5,16 +5,16 @@ namespace PrintNode.Net
     public class PrintNodeDelegatedClientContext : IDisposable
     {
         public static PrintNodeDelegatedClientContext Current { get; private set; }
-        internal string ClientId { get; private set; }
+        internal int AccountId { get; private set; }
 
-        public PrintNodeDelegatedClientContext(string clientId)
+        public PrintNodeDelegatedClientContext(int accountId)
         {
             if (Current != null)
             {
-                throw new Exception("Nested client contexts are not supported.");
+                Current = null;
             }
 
-            ClientId = clientId;
+            AccountId = accountId;
             Current = this;
         }
 

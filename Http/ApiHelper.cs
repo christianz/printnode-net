@@ -107,7 +107,8 @@ namespace PrintNode.Net
 
             if (context != null)
             {
-                http.DefaultRequestHeaders.Add("X-Child-Account-By-Id", context.ClientId);
+                http.DefaultRequestHeaders.Add("X-Child-Account-By-Id", context.AccountId.ToString());
+                //http.DefaultRequestHeaders.Add("X-Child-Account-By-Email", "post@foodasylum.com");
             }
 
             foreach (var kv in headers)
