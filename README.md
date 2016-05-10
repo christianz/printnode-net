@@ -6,9 +6,9 @@ Let's set up your account first.
 
 Create an API key at printnode.com.
 
-Add the following to your ```<appsettings```:
+Add the following to your `<appsettings`:
 ```xml
-	<add key="PrintNodeApiKey" value="<your API key>"/>
+<add key="PrintNodeApiKey" value="<your API key>"/>
 ```
 
 Install your PrintNode client to the computer of your choice.
@@ -44,7 +44,7 @@ var computer = await PrintNodeComputer.GetAsync(computerId);
 ## To get a list of printers connected to your current account
 ```csharp
 var printers = await PrintNodePrinter.ListAsync();
-``
+```
 
 ## To get a specific printer
 ```csharp
