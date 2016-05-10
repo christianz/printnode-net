@@ -6,7 +6,7 @@ Let's set up your account first.
 
 Create an API key at printnode.com.
 
-Add the following to your `<appsettings`:
+Add the following to your `<appsettings` :
 ```xml
 <add key="PrintNodeApiKey" value="<your API key>"/>
 ```
