@@ -97,7 +97,22 @@ namespace PrintNode.Net
 
             if (context != null)
             {
-                http.DefaultRequestHeaders.Add("X-Child-Account-By-Id", context.AccountId.ToString());
+                var headerName = "";
+
+                switch (context.AuthenticationMode)
+                {
+                    case PrintNodeDelegatedClientContextAuthenticationMode.Id:
+                        headerName = "X-Child-Account-By-Id";
+                        break;
+                    case PrintNodeDelegatedClientContextAuthenticationMode.Email:
+                        headerName = "X-Child-Account-By-Email";
+                        break;
+                    case PrintNodeDelegatedClientContextAuthenticationMode.CreatorRef:
+                        headerName = "X-Child-Account-By-CreatorRef";
+                        break;
+                }
+
+                http.DefaultRequestHeaders.Add(headerName, context.AuthenticationValue);
             }
 
             foreach (var kv in headers)

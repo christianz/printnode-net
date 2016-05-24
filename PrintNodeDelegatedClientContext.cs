@@ -5,11 +5,22 @@ namespace PrintNode.Net
     public class PrintNodeDelegatedClientContext : IDisposable
     {
         public static PrintNodeDelegatedClientContext Current { get; private set; }
-        internal int AccountId { get; private set; }
+
+        internal PrintNodeDelegatedClientContextAuthenticationMode AuthenticationMode;
+
+        internal string AuthenticationValue { get; private set; }
 
         public PrintNodeDelegatedClientContext(int accountId)
         {
-            AccountId = accountId;
+            AuthenticationValue = accountId.ToString();
+            AuthenticationMode = PrintNodeDelegatedClientContextAuthenticationMode.Id;
+            Current = this;
+        }
+
+        public PrintNodeDelegatedClientContext(string email)
+        {
+            AuthenticationValue = email;
+            AuthenticationMode = PrintNodeDelegatedClientContextAuthenticationMode.Email;
             Current = this;
         }
 
