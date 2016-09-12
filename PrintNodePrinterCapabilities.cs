@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace PrintNode.Net
@@ -30,7 +30,7 @@ namespace PrintNode.Net
         public IEnumerable<int> Nup { get; set; }
 
         [JsonProperty("papers")]
-        public Dictionary<string, int[]> Papers { get; set; }
+        public Dictionary<string, int?[]> Papers { get; set; }
 
         [JsonProperty("printRate")]
         public Dictionary<string, string> PrintRate { get; set; } 
