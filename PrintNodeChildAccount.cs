@@ -108,7 +108,10 @@ namespace PrintNode.Net
 
         public static async Task<bool> DeleteAsync(long id)
         {
-            var response = await ApiHelper.Delete("/account", null);
+            var response = await ApiHelper.Delete("/account", new Dictionary<string, string>
+            {
+                { "X-Child-Account-By-Id", id.ToString() }
+            });
 
             return JsonConvert.DeserializeObject<bool>(response);
         }
