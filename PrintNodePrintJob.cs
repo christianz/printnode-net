@@ -55,7 +55,7 @@ namespace PrintNode.Net
         /// An object describing various options which can be set for this PrintJob. See options. Printing options have no effect when raw printing.
         /// </summary>
         [JsonProperty("options")]
-        public IEnumerable<PrintNodePrintJobOptions> Options { get; set; }
+        public PrintNodePrintJobOptions Options { get; set; }
 
         /// <summary>
         /// The maximum number of seconds PrintNode should retain this PrintJob for attempted printing in the event the PrintJob cannot be 
