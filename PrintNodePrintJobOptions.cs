@@ -25,7 +25,7 @@ namespace PrintNode.Net
         /// See <a href="https://www.printnode.com/docs/api/curl/#printer-capabilities">Printer capabilities</a>.
         /// </summary>
         [JsonProperty("copies")]
-        public int Copies { get; set; }
+        public int Copies { get; set; } = 1;
 
         /// <summary>
         /// The dpi setting to use for this PrintJob. Allowed values are those reported by the printer capability property "dpis".
@@ -64,7 +64,7 @@ namespace PrintNode.Net
         /// See <a href="https://www.printnode.com/docs/api/curl/#printer-capabilities">Printer capabilities</a>.
         /// </summary>
         [JsonProperty("nup")]
-        public int Nup { get; set; }
+        public int Nup { get; set; } = 1;
 
         /// <summary>
         /// A set of pages to print from a PDF. The format is described here. A few quick exampleE.g. 1,3 prints pages 1 and 3. -5 prints 
@@ -73,7 +73,7 @@ namespace PrintNode.Net
         /// See <a href="https://www.printnode.com/docs/api/curl/#parameters">Parameters</a>.
         /// </summary>
         [JsonProperty("pages")]
-        public string Pages { get; set; }
+        public string Pages { get; set; } = "-";
 
         /// <summary>
         /// A named paper size to use. Allowed values are the keys in the object returned by the printer capability property "papers".
@@ -88,5 +88,12 @@ namespace PrintNode.Net
         /// </summary>
         [JsonProperty("rotate")]
         public int Rotate { get; set; }
+
+
+		/// <summary>
+        /// Print in color or black and white. Ignored by Print Engine 4.
+        /// </summary>
+        [JsonProperty("color")]
+        public bool Color { get; set; } = true;
     }
 }
