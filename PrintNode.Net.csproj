@@ -52,6 +52,7 @@
     <Compile Include="PrintNodeChildAccountCreationResponseConverter.cs" />
     <Compile Include="PrintNodeComputer.cs" />
     <Compile Include="PrintNodeConfiguration.cs" />
+    <Compile Include="PrintNodeContentType.cs" />
     <Compile Include="PrintNodeCredentials.cs" />
     <Compile Include="PrintNodeDelegatedClientContext.cs" />
     <Compile Include="PrintNodeDelegatedClientContextAuthenticationMode.cs" />

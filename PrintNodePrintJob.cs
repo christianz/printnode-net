@@ -49,7 +49,7 @@ namespace PrintNode.Net
         /// A text description of how the printjob was created or where the printjob originated.
         /// </summary>
         [JsonProperty("source")]
-        public string Source { get; set; }
+        public string Source { get; set; } = "printnode-net";
 
         /// <summary>
         /// An object describing various options which can be set for this PrintJob. See options. Printing options have no effect when raw printing.
@@ -71,7 +71,7 @@ namespace PrintNode.Net
         /// printer driver does not natively support this.
         /// </summary>
         [JsonProperty("qty")]
-        public int Qty { get; set; }
+        public int Qty { get; set; } = 1;
 
         /// <summary>
         /// If a contentType of 'pdf_uri' or 'raw_uri' is used and the uri requires either HTTP Basic or Digest Authentication you can specify 
@@ -106,6 +106,17 @@ namespace PrintNode.Net
         [JsonProperty("createTimeStamp")]
         public DateTime? CreateTimeStamp { get; set; }
 
+		public PrintNodePrintJob() { }
+
+		public PrintNodePrintJob(string title, PrintNodeContentType contentType, string content, long printerId)
+		{
+			Title = title;
+			ContentType = contentType.ToString();
+			Content = content;
+			PrinterId = printerId;
+		}
+
+
         public static async Task<IEnumerable<PrintNodePrintJob>> ListAsync()
         {
             var response = await ApiHelper.Get("/printjobs");
@@ -136,6 +147,18 @@ namespace PrintNode.Net
             var list = JsonConvert.DeserializeObject<IEnumerable<IEnumerable<PrintNodePrintJobState>>>(response);
 
             return list.FirstOrDefault();
+        }
+
+		 public async Task<long> Print()
+        {
+            if (Printer == null && PrinterId == 0)
+			{
+				throw new Exception("Printer or PrinterId required");
+			}
+
+            var response = await ApiHelper.Post("/printjobs", this);
+
+            return JsonConvert.DeserializeObject<long>(response);
         }
     }
 }
