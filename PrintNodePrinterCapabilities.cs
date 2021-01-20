@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public class PrintNodePrinterCapabilities
     {

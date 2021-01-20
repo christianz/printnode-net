@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PrintNodeNet.Http;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public sealed class PrintNodeComputer
     {
@@ -32,16 +33,16 @@ namespace PrintNode.Net
         [JsonProperty("state")]
         public string State { get; set; }
 
-        public static async Task<IEnumerable<PrintNodeComputer>> ListAsync()
+        public static async Task<IEnumerable<PrintNodeComputer>> ListAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/computers");
+            var response = await ApiHelper.Get("/computers", options);
 
             return JsonConvert.DeserializeObject<List<PrintNodeComputer>>(response);
         }
 
-        public static async Task<PrintNodeComputer> GetAsync(long id)
+        public static async Task<PrintNodeComputer> GetAsync(long id, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/computers/" + id);
+            var response = await ApiHelper.Get($"/computers/{id}", options);
 
             var list = JsonConvert.DeserializeObject<List<PrintNodeComputer>>(response);
 

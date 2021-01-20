@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
+using PrintNodeNet;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public class PrintNodePrintJobAuthentication
     {

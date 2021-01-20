@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PrintNodeNet.Http;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public sealed class PrintNodePrintJobState
     {
@@ -54,9 +55,9 @@ namespace PrintNode.Net
         [JsonProperty("age")]
         public int Age { get; set; }
 
-        public static async Task<IEnumerable<IEnumerable<PrintNodePrintJobState>>> ListAsync()
+        public static async Task<IEnumerable<IEnumerable<PrintNodePrintJobState>>> ListAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/printjobs/states");
+            var response = await ApiHelper.Get("/printjobs/states", options);
 
             return JsonConvert.DeserializeObject<IEnumerable<IEnumerable<PrintNodePrintJobState>>>(response);
         }

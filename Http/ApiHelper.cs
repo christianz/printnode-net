@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace PrintNode.Net
+namespace PrintNodeNet.Http
 {
     internal static class ApiHelper
     {
@@ -18,9 +18,9 @@ namespace PrintNode.Net
             NullValueHandling = NullValueHandling.Ignore
         };
 
-        internal static async Task<string> Get(string relativeUri)
+        internal static async Task<string> Get(string relativeUri, PrintNodeRequestOptions options)
         {
-            using (var http = BuildHttpClient())
+            using (var http = BuildHttpClient(options))
             {
                 var result = await http.GetAsync(BaseUri + relativeUri, CancellationToken.None);
 
@@ -33,9 +33,9 @@ namespace PrintNode.Net
             }
         }
 
-        internal static async Task<string> Post<T>(string relativeUri, T parameters)
+        internal static async Task<string> Post<T>(string relativeUri, T parameters, PrintNodeRequestOptions options)
         {
-            using (var http = BuildHttpClient())
+            using (var http = BuildHttpClient(options))
             {
                 var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
 
@@ -50,9 +50,9 @@ namespace PrintNode.Net
             }
         }
 
-        internal static async Task<string> Patch<T>(string relativeUri, T parameters, Dictionary<string, string> headers)
+        internal static async Task<string> Patch<T>(string relativeUri, T parameters, PrintNodeRequestOptions options, Dictionary<string, string> headers)
         {
-            using (var http = BuildHttpClient(headers))
+            using (var http = BuildHttpClient(options, headers))
             {
                 var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
                 var request = new HttpRequestMessage(new HttpMethod("PATCH"), BaseUri + relativeUri) { Content = new StringContent(json, Encoding.UTF8, "application/json") };
@@ -68,9 +68,9 @@ namespace PrintNode.Net
             }
         }
 
-        internal static async Task<string> Delete(string relativeUri, Dictionary<string, string> headers)
+        internal static async Task<string> Delete(string relativeUri, PrintNodeRequestOptions options, Dictionary<string, string> headers)
         {
-            using (var http = BuildHttpClient(headers))
+            using (var http = BuildHttpClient(options, headers))
             {
                 var request = new HttpRequestMessage(new HttpMethod("DELETE"), BaseUri + relativeUri);
 
@@ -85,12 +85,19 @@ namespace PrintNode.Net
             }
         }
 
-        private static HttpClient BuildHttpClient(Dictionary<string, string> headers = null)
+        private static HttpClient BuildHttpClient(PrintNodeRequestOptions options, Dictionary<string, string> headers = null)
         {
+            var apiKey = options?.ApiKey ?? PrintNodeConfiguration.ApiKey;
+
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                throw new Exception("PrintNode API key not set! Please go to printnode.com and request an API key, and follow the instructions for configuring PrintNode.Net");
+            }
+
             headers = headers ?? new Dictionary<string, string>();
             var http = new HttpClient();
 
-            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(PrintNodeConfiguration.GetApiKey())));
+            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(apiKey)));
             http.DefaultRequestHeaders.Add("Accept-Version", "~3");
 
             var context = PrintNodeDelegatedClientContext.Current;

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public class PrintNodeException : Exception
     {
@@ -16,10 +17,16 @@ namespace PrintNode.Net
 
         private static string GetErrorContent(HttpResponseMessage response)
         {
-            var message = response.Content.ReadAsStringAsync().Result;
-            var content = JsonConvert.DeserializeObject<dynamic>(message);
+            var message = Task.Run(() => response.Content.ReadAsStringAsync()).Result;
+            var content = JsonConvert.DeserializeObject<PrintNodeErrorMessage>(message);
 
-            return content.message;
+            return content.Message;
         }
+    }
+
+    internal class PrintNodeErrorMessage
+    {
+        [JsonProperty(PropertyName = "message")]
+        public string Message { get; set; }
     }
 }

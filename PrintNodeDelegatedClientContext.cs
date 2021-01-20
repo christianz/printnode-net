@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public class PrintNodeDelegatedClientContext : IDisposable
     {

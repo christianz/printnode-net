@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PrintNodeNet.Http;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public sealed class PrintNodeChildAccount
     {
@@ -61,32 +62,32 @@ namespace PrintNode.Net
         /// A array of tag names and values to be associated with an account.
         /// </summary>
         [JsonProperty("Tags")]
-        public Dictionary<string, string> Tags { get; set; } 
+        public Dictionary<string, string> Tags { get; set; }
 
-        public async Task<PrintNodeChildAccount> CreateAsync()
+        public async Task<PrintNodeChildAccount> CreateAsync(PrintNodeRequestOptions options = null)
         {
             var response = await ApiHelper.Post("/account", new
             {
                 Account = this,
                 ApiKeys,
                 Tags
-            });
+            }, options);
 
             return JsonConvert.DeserializeObject<PrintNodeChildAccount>(response, new PrintNodeChildAccountCreationResponseConverter());
         }
 
-        public static async Task<string> GetKeyAsync(string clientId)
+        public static async Task<string> GetKeyAsync(string clientId, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/client/key/" + clientId + "?version=4.7.1&edition=printnode");
+            var response = await ApiHelper.Get($"/client/key/{clientId}?version=4.7.1&edition=printnode", options);
 
             return JsonConvert.DeserializeObject<string>(response);
         }
 
-        public static async Task<bool> Exists()
+        public static async Task<bool> Exists(PrintNodeRequestOptions options = null)
         {
             try
             {
-                var response = await ApiHelper.Get("/whoami");
+                var response = await ApiHelper.Get("/whoami", options);
 
                 return !string.IsNullOrEmpty(response);
             }
@@ -96,9 +97,9 @@ namespace PrintNode.Net
             }
         }
 
-        public async Task<PrintNodeChildAccount> UpdateAsync()
+        public async Task<PrintNodeChildAccount> UpdateAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Patch("/account", this, new Dictionary<string, string>
+            var response = await ApiHelper.Patch("/account", this, options, new Dictionary<string, string>
             {
                 { "X-Child-Account-By-Id", Id.ToString() }
             });
@@ -106,9 +107,9 @@ namespace PrintNode.Net
             return JsonConvert.DeserializeObject<PrintNodeChildAccount>(response);
         }
 
-        public static async Task<bool> DeleteAsync(long id)
+        public static async Task<bool> DeleteAsync(long id, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Delete("/account", new Dictionary<string, string>
+            var response = await ApiHelper.Delete("/account", options, new Dictionary<string, string>
             {
                 { "X-Child-Account-By-Id", id.ToString() }
             });
