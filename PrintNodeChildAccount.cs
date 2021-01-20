@@ -98,21 +98,14 @@ namespace PrintNode.Net
 
         public async Task<PrintNodeChildAccount> UpdateAsync()
         {
-            var response = await ApiHelper.Patch("/account", this, new Dictionary<string, string>
-            {
-                { "X-Child-Account-By-Id", Id.ToString() }
-            });
+            var response = await ApiHelper.Patch("/account", this, Id.ToString());
 
             return JsonConvert.DeserializeObject<PrintNodeChildAccount>(response);
         }
 
         public static async Task<bool> DeleteAsync(long id)
         {
-            var response = await ApiHelper.Delete("/account", new Dictionary<string, string>
-            {
-                { "X-Child-Account-By-Id", id.ToString() }
-            });
-
+            var response = await ApiHelper.Delete("/account", id.ToString());
             return JsonConvert.DeserializeObject<bool>(response);
         }
     }
