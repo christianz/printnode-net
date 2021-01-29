@@ -6,14 +6,28 @@ Let's set up your account first.
 
 Create an API key at printnode.com.
 
-Add the following to your `<appsettings>`:
-```xml
-<add key="PrintNodeApiKey" value="<your API key>"/>
-```
-
 Install your PrintNode client to the computer of your choice.
 
-Let's make sure your computer has been registered:
+Open the PrintNode client and get the printer ID. Now let's "Hello, world!":
+
+```csharp
+// Your PrintNode API key is stored in apiKey
+// Your PrintNode printer id is stored in printerId
+// Your awesome test PDF is stored as a byte[] in pdfDocumentBytes
+
+PrintNodeConfiguration.ApiKey = apiKey;
+var printer = await PrintNodePrinter.GetAsync(printerId);
+var printJob = new PrintNodePrintJob
+{
+    Title = "Hello, world!",
+    Content = Convert.ToBase64String(pdfDocumentBytes),
+    ContentType = "pdf_base64"
+};
+
+await printer.AddPrintJob(printJob);
+```
+
+## You can set up several computers each with their own PrintNode client, and register them to the same PrintNode account.
 
 ```csharp
 var computers = await PrintNodeComputer.ListAsync();
@@ -60,7 +74,7 @@ var printJob = new PrintNodePrintJob
 {
     Title = "My cool test print",
     Content = Convert.ToBase64String(pdfDocument),
-    ContentType = "raw_pdf"
+    ContentType = "pdf_base64"
 };
 
 var response = await printer.AddPrintJob(printJob);
