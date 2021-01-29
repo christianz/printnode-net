@@ -35,14 +35,14 @@ namespace PrintNodeNet
 
         public static async Task<IEnumerable<PrintNodeComputer>> ListAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/computers", options);
+            var response = await PrintNodeApiHelper.Get("/computers", options);
 
             return JsonConvert.DeserializeObject<List<PrintNodeComputer>>(response);
         }
 
         public static async Task<PrintNodeComputer> GetAsync(long id, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get($"/computers/{id}", options);
+            var response = await PrintNodeApiHelper.Get($"/computers/{id}", options);
 
             var list = JsonConvert.DeserializeObject<List<PrintNodeComputer>>(response);
 

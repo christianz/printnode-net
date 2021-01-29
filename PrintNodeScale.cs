@@ -122,14 +122,14 @@ namespace PrintNodeNet
 
         public static async Task<IEnumerable<PrintNodeScale>> ListForComputerAsync(long computerId, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get($"/computer/{computerId}/scales", options);
+            var response = await PrintNodeApiHelper.Get($"/computer/{computerId}/scales", options);
 
             return JsonConvert.DeserializeObject<List<PrintNodeScale>>(response);
         }
 
         public static async Task<PrintNodeScale> GetAsync(long computerId, string deviceName, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get($"/computer/{computerId}/scales/{deviceName}", options);
+            var response = await PrintNodeApiHelper.Get($"/computer/{computerId}/scales/{deviceName}", options);
 
             return JsonConvert.DeserializeObject<PrintNodeScale>(response);
         }

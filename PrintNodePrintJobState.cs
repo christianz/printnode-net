@@ -57,7 +57,7 @@ namespace PrintNodeNet
 
         public static async Task<IEnumerable<IEnumerable<PrintNodePrintJobState>>> ListAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/printjobs/states", options);
+            var response = await PrintNodeApiHelper.Get("/printjobs/states", options);
 
             return JsonConvert.DeserializeObject<IEnumerable<IEnumerable<PrintNodePrintJobState>>>(response);
         }

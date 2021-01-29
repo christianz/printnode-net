@@ -121,21 +121,21 @@ namespace PrintNodeNet
 
         public static async Task<IEnumerable<PrintNodePrintJob>> ListAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/printjobs", options);
+            var response = await PrintNodeApiHelper.Get("/printjobs", options);
 
             return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
         }
 
         public static async Task<IEnumerable<PrintNodePrintJob>> ListForPrinterAsync(int printerId, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get($"/printers/{printerId}/printjobs", options);
+            var response = await PrintNodeApiHelper.Get($"/printers/{printerId}/printjobs", options);
 
             return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
         }
 
         public static async Task<PrintNodePrintJob> GetAsync(int id, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get($"/printjobs/{id}", options);
+            var response = await PrintNodeApiHelper.Get($"/printjobs/{id}", options);
 
             var list = JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
 
@@ -144,7 +144,7 @@ namespace PrintNodeNet
 
         public async Task<IEnumerable<PrintNodePrintJobState>> GetStates(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get($"/printjobs/{Id}/states", options);
+            var response = await PrintNodeApiHelper.Get($"/printjobs/{Id}/states", options);
 
             var list = JsonConvert.DeserializeObject<IEnumerable<IEnumerable<PrintNodePrintJobState>>>(response);
 
@@ -158,7 +158,7 @@ namespace PrintNodeNet
 				throw new Exception("Printer or PrinterId required");
 			}
 
-            var response = await ApiHelper.Post("/printjobs", this, options);
+            var response = await PrintNodeApiHelper.Post("/printjobs", this, options);
 
             return JsonConvert.DeserializeObject<long>(response);
         }

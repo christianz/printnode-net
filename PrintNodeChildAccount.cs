@@ -66,7 +66,7 @@ namespace PrintNodeNet
 
         public async Task<PrintNodeChildAccount> CreateAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Post("/account", new
+            var response = await PrintNodeApiHelper.Post("/account", new
             {
                 Account = this,
                 ApiKeys,
@@ -78,7 +78,7 @@ namespace PrintNodeNet
 
         public static async Task<string> GetKeyAsync(string clientId, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get($"/client/key/{clientId}?version=4.7.1&edition=printnode", options);
+            var response = await PrintNodeApiHelper.Get($"/client/key/{clientId}?version=4.7.1&edition=printnode", options);
 
             return JsonConvert.DeserializeObject<string>(response);
         }
@@ -87,7 +87,7 @@ namespace PrintNodeNet
         {
             try
             {
-                var response = await ApiHelper.Get("/whoami", options);
+                var response = await PrintNodeApiHelper.Get("/whoami", options);
 
                 return !string.IsNullOrEmpty(response);
             }
@@ -99,7 +99,7 @@ namespace PrintNodeNet
 
         public async Task<PrintNodeChildAccount> UpdateAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Patch("/account", this, options, new Dictionary<string, string>
+            var response = await PrintNodeApiHelper.Patch("/account", this, options, new Dictionary<string, string>
             {
                 { "X-Child-Account-By-Id", Id.ToString() }
             });
@@ -109,7 +109,7 @@ namespace PrintNodeNet
 
         public static async Task<bool> DeleteAsync(long id, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Delete("/account", options, new Dictionary<string, string>
+            var response = await PrintNodeApiHelper.Delete("/account", options, new Dictionary<string, string>
             {
                 { "X-Child-Account-By-Id", id.ToString() }
             });
