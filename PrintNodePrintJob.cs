@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using PrintNodeNet;
 using PrintNodeNet.Http;
 
 namespace PrintNodeNet
@@ -126,14 +125,14 @@ namespace PrintNodeNet
             return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
         }
 
-        public static async Task<IEnumerable<PrintNodePrintJob>> ListForPrinterAsync(int printerId, PrintNodeRequestOptions options = null)
+        public static async Task<IEnumerable<PrintNodePrintJob>> ListForPrinterAsync(long printerId, PrintNodeRequestOptions options = null)
         {
             var response = await PrintNodeApiHelper.Get($"/printers/{printerId}/printjobs", options);
 
             return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
         }
 
-        public static async Task<PrintNodePrintJob> GetAsync(int id, PrintNodeRequestOptions options = null)
+        public static async Task<PrintNodePrintJob> GetAsync(long id, PrintNodeRequestOptions options = null)
         {
             var response = await PrintNodeApiHelper.Get($"/printjobs/{id}", options);
 

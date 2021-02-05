@@ -11,7 +11,7 @@ namespace PrintNodeNet
         /// Assigned by API. Any value submitted here will be ignored.
         /// </summary>
         [JsonProperty("id")]
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// The child account user's first name
