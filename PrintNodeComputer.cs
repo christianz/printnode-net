@@ -48,5 +48,13 @@ namespace PrintNodeNet
 
             return list.FirstOrDefault();
         }
+
+        public async Task<IEnumerable<PrintNodePrinter>> ListPrinters(PrintNodeRequestOptions options = null)
+        {
+            var response = await PrintNodeApiHelper.Get($"/computers/{Id}/printers", options);
+
+            return JsonConvert.DeserializeObject<List<PrintNodePrinter>>(response);
+
+        }
     }
 }
