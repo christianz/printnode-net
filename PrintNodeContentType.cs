@@ -1,4 +1,4 @@
-﻿namespace PrintNode.Net
+﻿namespace PrintNodeNet
 {
 	public enum PrintNodeContentType
 	{

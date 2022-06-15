@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public class PrintNodeScaleMeasurement
     {

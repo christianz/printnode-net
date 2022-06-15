@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PrintNodeNet.Http;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     public sealed class PrintNodePrintJob
     {
@@ -117,46 +118,46 @@ namespace PrintNode.Net
 		}
 
 
-        public static async Task<IEnumerable<PrintNodePrintJob>> ListAsync()
+        public static async Task<IEnumerable<PrintNodePrintJob>> ListAsync(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/printjobs");
+            var response = await PrintNodeApiHelper.Get("/printjobs", options);
 
             return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
         }
 
-        public static async Task<IEnumerable<PrintNodePrintJob>> ListForPrinterAsync(int printerId)
+        public static async Task<IEnumerable<PrintNodePrintJob>> ListForPrinterAsync(long printerId, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/printers/" + printerId + "/printjobs");
+            var response = await PrintNodeApiHelper.Get($"/printers/{printerId}/printjobs", options);
 
             return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
         }
 
-        public static async Task<PrintNodePrintJob> GetAsync(int id)
+        public static async Task<PrintNodePrintJob> GetAsync(long id, PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/printjobs/" + id);
+            var response = await PrintNodeApiHelper.Get($"/printjobs/{id}", options);
 
             var list = JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
 
             return list.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<PrintNodePrintJobState>> GetStates()
+        public async Task<IEnumerable<PrintNodePrintJobState>> GetStates(PrintNodeRequestOptions options = null)
         {
-            var response = await ApiHelper.Get("/printjobs/" + Id + "/states");
+            var response = await PrintNodeApiHelper.Get($"/printjobs/{Id}/states", options);
 
             var list = JsonConvert.DeserializeObject<IEnumerable<IEnumerable<PrintNodePrintJobState>>>(response);
 
             return list.FirstOrDefault();
         }
 
-		 public async Task<long> Print()
+		 public async Task<long> Print(PrintNodeRequestOptions options = null)
         {
             if (Printer == null && PrinterId == 0)
 			{
 				throw new Exception("Printer or PrinterId required");
 			}
 
-            var response = await ApiHelper.Post("/printjobs", this);
+            var response = await PrintNodeApiHelper.Post("/printjobs", this, options);
 
             return JsonConvert.DeserializeObject<long>(response);
         }

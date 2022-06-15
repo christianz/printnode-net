@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace PrintNode.Net
+namespace PrintNodeNet
 {
     internal sealed class PrintNodeChildAccountCreationResponseConverter : JsonConverter
     {
