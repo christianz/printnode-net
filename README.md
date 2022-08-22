@@ -27,7 +27,8 @@ var printJob = new PrintNodePrintJob
 await printer.AddPrintJob(printJob);
 ```
 
-## The API base address can be changed if neccessary (default is https://api.printnode.com)
+## The API base address can be changed if necessary
+#### The default is https://api.printnode.com
 ```csharp
 PrintNodeConfiguration.BaseAddress = new Uri("https://companyname-api.printnode.com");
 ```
