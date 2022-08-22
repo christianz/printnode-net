@@ -11,7 +11,6 @@ namespace PrintNodeNet.Http
 {
     internal static class PrintNodeApiHelper
     {
-        private const string BaseUri = "https://api.printnode.com";
         private static readonly HttpClient Client = BuildHttpClient();
 
         private static readonly JsonSerializerSettings DefaultSerializationSettings = new JsonSerializerSettings
@@ -23,7 +22,7 @@ namespace PrintNodeNet.Http
         {
             SetAuthenticationHeader(Client, options);
 
-            var result = await Client.GetAsync(BaseUri + relativeUri, CancellationToken.None);
+            var result = await Client.GetAsync(relativeUri, CancellationToken.None);
 
             if (!result.IsSuccessStatusCode)
             {
@@ -39,7 +38,7 @@ namespace PrintNodeNet.Http
 
             var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
 
-            var response = await Client.PostAsync(BaseUri + relativeUri, new StringContent(json, Encoding.UTF8, "application/json"), CancellationToken.None);
+            var response = await Client.PostAsync(relativeUri, new StringContent(json, Encoding.UTF8, "application/json"), CancellationToken.None);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -54,7 +53,7 @@ namespace PrintNodeNet.Http
             SetAuthenticationHeader(Client, options);
 
             var json = JsonConvert.SerializeObject(parameters, DefaultSerializationSettings);
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), BaseUri + relativeUri) { Content = new StringContent(json, Encoding.UTF8, "application/json") };
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), relativeUri) { Content = new StringContent(json, Encoding.UTF8, "application/json") };
             
             foreach (var h in headers)
             {
@@ -75,7 +74,7 @@ namespace PrintNodeNet.Http
         {
             SetAuthenticationHeader(Client, options);
 
-            var request = new HttpRequestMessage(new HttpMethod("DELETE"), BaseUri + relativeUri);
+            var request = new HttpRequestMessage(new HttpMethod("DELETE"), relativeUri);
 
             foreach (var h in headers)
             {
@@ -104,12 +103,12 @@ namespace PrintNodeNet.Http
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(apiKey)));
         }
 
-        private static HttpClient BuildHttpClient(Dictionary<string, string> headers = null)
+        private static HttpClient BuildHttpClient()
         {
-            headers = headers ?? new Dictionary<string, string>();
             var http = new HttpClient();
 
             http.DefaultRequestHeaders.Add("Accept-Version", "~3");
+            http.BaseAddress = PrintNodeConfiguration.BaseAddress;
 
             var context = PrintNodeDelegatedClientContext.Current;
 
