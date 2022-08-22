@@ -27,6 +27,11 @@ var printJob = new PrintNodePrintJob
 await printer.AddPrintJob(printJob);
 ```
 
+## The API base address can be changed if neccessary (default is https://api.printnode.com)
+```csharp
+PrintNodeConfiguration.BaseAddress = new Uri("https://companyname-api.printnode.com");
+```
+
 ## You can set up several computers each with their own PrintNode client, and register them to the same PrintNode account.
 
 ```csharp
