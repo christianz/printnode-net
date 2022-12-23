@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PrintNodeNet.Http;
+using PrintNodeNet.Util;
 
 namespace PrintNodeNet
 {
@@ -132,6 +133,40 @@ namespace PrintNodeNet
             return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
         }
 
+        /// <summary>
+        /// Static method that allows the retrieval of the list of <seealso cref="PrintNodePrintJob"/>
+        /// for a set of <seealso cref="PrintNodePrinter"/>.
+        /// </summary>
+        /// <param name="set">The ids of the printers</param>
+        /// <param name="options">The request options (allows API key modification).</param>
+        /// <returns>The print jobs of every printer that has its ID included in the set</returns>
+        public static async Task<IEnumerable<PrintNodePrintJob>> ListForPrinterSetAsync(IEnumerable<long> set, PrintNodeRequestOptions options = null)
+        {
+            string ids = new SetBuilder(set).Build();
+
+            var response = await PrintNodeApiHelper.Get($"/printers/{ids}/printjobs", options);
+
+            return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
+        }
+
+        /// <summary>
+        /// Static method that allows the retrieval of a set of <seealso cref="PrintNodePrintJob"/>
+        /// for a set of <seealso cref="PrintNodePrinter"/>.
+        /// </summary>
+        /// <param name="printerSet">The ids of the printers</param>
+        /// <param name="printjobSet">The ids of the print jobs</param>
+        /// <param name="options">The request options (allows API key modification).</param>
+        /// <returns>The union between print jobs of the given ids and printjobs of the given printers.</returns>
+        public static async Task<IEnumerable<PrintNodePrintJob>> ListPrinjobSetForPrinterSetAsync(IEnumerable<long> printerSet, IEnumerable<long> printjobSet, PrintNodeRequestOptions options = null)
+        {
+            string printerIds = new SetBuilder(printerSet).Build();
+            string printjobsIds = new SetBuilder(printjobSet).Build();
+
+            var response = await PrintNodeApiHelper.Get($"/printers/{printerIds}/printjobs/{printjobsIds}", options);
+
+            return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
+        }
+
         public static async Task<PrintNodePrintJob> GetAsync(long id, PrintNodeRequestOptions options = null)
         {
             var response = await PrintNodeApiHelper.Get($"/printjobs/{id}", options);
@@ -141,6 +176,22 @@ namespace PrintNodeNet
             return list.FirstOrDefault();
         }
 
+        /// <summary>
+        /// Static method that allows the retrieval of a set of <seealso cref="PrintNodePrintJob"/>,
+        /// identified by their IDs.
+        /// </summary>
+        /// <param name="set">The ids of the print jobs</param>
+        /// <param name="options">The request options (allows API key modification).</param>
+        /// <returns>The print jobs as an enumerable.</returns>
+        public static async Task<IEnumerable<PrintNodePrintJob>> GetSetAsync(IEnumerable<long> set, PrintNodeRequestOptions options = null)
+        {
+            string ids = new SetBuilder(set).Build();
+
+            var response = await PrintNodeApiHelper.Get($"/printjobs/{ids}", options);
+
+            return JsonConvert.DeserializeObject<IEnumerable<PrintNodePrintJob>>(response);
+        }
+
         public async Task<IEnumerable<PrintNodePrintJobState>> GetStates(PrintNodeRequestOptions options = null)
         {
             var response = await PrintNodeApiHelper.Get($"/printjobs/{Id}/states", options);
@@ -148,6 +199,37 @@ namespace PrintNodeNet
             var list = JsonConvert.DeserializeObject<IEnumerable<IEnumerable<PrintNodePrintJobState>>>(response);
 
             return list.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Static overwrite of the <seealso cref="GetStates(PrintNodeRequestOptions)"/> method.
+        /// It retrieves all the history of states for the given printjob id.
+        /// </summary>
+        /// <param name="id">The print job ID to get the history from.</param>
+        /// <param name="options">The request options (allows API key modification).</param>
+        /// <returns>A list of <seealso cref="PrintNodePrintJobState"/> that traces every state the printjob has been in since its creation.</returns>
+        public static async Task<IEnumerable<PrintNodePrintJobState>> GetStates(long id, PrintNodeRequestOptions options = null)
+        {
+            var response = await PrintNodeApiHelper.Get($"/printjobs/{id}/states", options);
+
+            var list = JsonConvert.DeserializeObject<IEnumerable<IEnumerable<PrintNodePrintJobState>>>(response);
+
+            return list.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// This method retrieves all the history of states for the given set of print jobs.
+        /// </summary>
+        /// <param name="set">The ids of all the print jobs we want to get the states of.</param>
+        /// <param name="options">The request options (allows API key modification).</param>
+        /// <returns>A list of <seealso cref="PrintNodePrintJobState"/> that traces every state the print job has been in since its creation, for every print job of the set.</returns>
+        public static async Task<IEnumerable<IEnumerable<PrintNodePrintJobState>>> GetPrintJobSetStatesAsync(IEnumerable<long> set, PrintNodeRequestOptions options = null)
+        {
+            string ids = new SetBuilder(set).Build();
+
+            var response = await PrintNodeApiHelper.Get($"/printjobs/{ids}/states", options);
+
+            return JsonConvert.DeserializeObject<IEnumerable<IEnumerable<PrintNodePrintJobState>>>(response);
         }
 
 		 public async Task<long> Print(PrintNodeRequestOptions options = null)
