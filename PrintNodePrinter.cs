@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PrintNodeNet.Http;
+using PrintNodeNet.Util;
 
 namespace PrintNodeNet
 {
@@ -47,6 +48,21 @@ namespace PrintNodeNet
             var list = JsonConvert.DeserializeObject<List<PrintNodePrinter>>(response);
 
             return list.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Static method to retrieve a set of printers from the PrintNode API.
+        /// </summary>
+        /// <param name="printerSet">The list of ids of the printers.</param>
+        /// <param name="options">The request options (allows API key modification).</param>
+        /// <returns>The list of <seealso cref="PrintNodePrinter"/> matching to the given ids.</returns>
+        public static async Task<IEnumerable<PrintNodePrinter>> GetSetAsync(IEnumerable<long> printerSet, PrintNodeRequestOptions options = null)
+        {
+            string ids = new SetBuilder(printerSet).Build();
+
+            var response = await PrintNodeApiHelper.Get($"/printers/{ids}", options);
+
+            return JsonConvert.DeserializeObject<List<PrintNodePrinter>>(response);
         }
 
         public async Task<long> AddPrintJob(PrintNodePrintJob job, PrintNodeRequestOptions options = null)
