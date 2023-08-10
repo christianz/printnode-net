@@ -115,3 +115,24 @@ using (new PrintNodeDelegatedClientContext(accountId))
 	var printers = PrintNodePrinter.ListAsync();
 }
 ```
+
+## To list scales for a specific computer
+```csharp
+var computerId = 12777;
+var scales = await PrintNodeScale.ListForComputerAsync(computerId);
+```
+
+## To list scales for a specific computer and scale name
+```csharp
+var computerId = 12777;
+var deviceName = "Fairbanks Scales - Fairbanks Scales SCB-R9000";
+var scales = await PrintNodeScale.ListForComputerDeviceAsync(computerId, deviceName);
+```
+
+## To get a specific scale
+```csharp
+var computerId = 12777;
+var deviceName = "Fairbanks Scales - Fairbanks Scales SCB-R9000";
+var deviceNum = 0;
+var scale = await PrintNodeScale.GetAsync(computerId, deviceName, deviceNum);
+```
