@@ -135,4 +135,6 @@ var computerId = 12777;
 var deviceName = "Fairbanks Scales - Fairbanks Scales SCB-R9000";
 var deviceNum = 0;
 var scale = await PrintNodeScale.GetAsync(computerId, deviceName, deviceNum);
+
+var massInMicrograms = scale.Mass[0];
 ```
