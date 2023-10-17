@@ -19,7 +19,7 @@ namespace PrintNodeNet
         /// For example, a reading of 125g with a resolution of 5g would be represented as [125000000, 5000000].
         /// </summary>
         [JsonProperty("mass")]
-        public int?[] Mass { get; set; }
+        public long?[] Mass { get; set; }
 
         /// <summary>
         /// A string identifier for the scale. This is usually the scale's manufacturer and description, unless it has been renamed
